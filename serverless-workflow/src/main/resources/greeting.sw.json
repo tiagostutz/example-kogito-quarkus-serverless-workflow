@@ -80,6 +80,10 @@
               "city_name": "${ .city }",
               "country_name": "${ .country }"
             }
+          },
+          "actionDataFilter": {
+            "results": "${ [.prices[] | select(.category_id == 6 or .category_id == 4) ] }",
+            "toStateData": "${ .food_prices }"
           }
         }
       ],
@@ -101,7 +105,7 @@
         }
       ],
       "stateDataFilter": {
-        "output": "${ {greeting: .greeting, city: .city, state_code: .state_code} }"
+        "output": "${ {greeting: .greeting, city: .city, state_code: .state_code, food_prices: .food_prices} }"
       },
       "end": true
     }

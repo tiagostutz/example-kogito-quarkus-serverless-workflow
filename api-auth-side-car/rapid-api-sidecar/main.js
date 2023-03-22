@@ -3,7 +3,7 @@ const url = require("url");
 const axios = require("axios");
 require("dotenv").config();
 
-const fake = require("./fake.json");
+const mockCostOfLiving = require("./mock_cost_of_living.json");
 
 const port = process.env.PORT || 3000;
 const proxyBaseUrl = process.env.PROXY_BASE_URL;
@@ -31,7 +31,7 @@ function onRequest(req, res) {
 
   if (process.env.NODE_ENV === "development") {
     res.writeHead(200, { "Content-Type": "application/json" });
-    return res.end(JSON.stringify(fake));
+    return res.end(JSON.stringify(mockCostOfLiving));
   }
 
   axios
