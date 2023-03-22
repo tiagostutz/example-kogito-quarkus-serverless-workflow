@@ -54,7 +54,8 @@
       "name": "GreetInSpanish",
       "type": "inject",
       "data": {
-        "language": "Spanish"
+        "language": "Spanish",
+        "city": "Barcelona"
       },
       "transition": "GetGreeting"
     },
@@ -62,7 +63,8 @@
       "name": "GreetInPortuguese",
       "type": "inject",
       "data": {
-        "language": "Portuguese"
+        "language": "Portuguese",
+        "city": "São Paulo"
       },
       "transition": "GetGreeting"
     },
@@ -82,7 +84,7 @@
         }
       ],
       "stateDataFilter": {
-        "output": "${ {greeting: .greeting} }"
+        "output": "${ {greeting: .greeting, city: .city} }"
       },
       "end": true
     }

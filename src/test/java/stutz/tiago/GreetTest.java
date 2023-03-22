@@ -21,7 +21,8 @@ public class GreetTest {
                 .post("/greeting")
                 .then()
                 .statusCode(201)
-                .body("workflowdata.greeting", containsString("Greetings"));
+                .body("workflowdata.greeting", containsString("Greetings"), "workflowdata.city",
+                        containsString("New York"));
     }
 
     @Test
@@ -34,6 +35,7 @@ public class GreetTest {
                 .post("/greeting")
                 .then()
                 .statusCode(201)
-                .body("workflowdata.greeting", containsString("Saludos"));
+                .body("workflowdata.greeting", containsString("Saludos"), "workflowdata.city",
+                        containsString("Barcelona"));
     }
 }
