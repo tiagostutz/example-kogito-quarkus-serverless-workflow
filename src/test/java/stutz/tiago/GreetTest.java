@@ -16,12 +16,12 @@ public class GreetTest {
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .body("{\"workflowdata\" : {\"name\" : \"Yoda\", \"language\":\"English\"}}")
+                .body("{\"workflowdata\" : {\"name\" : \"Yoda\", \"country\":\"USA\"}}")
                 .when()
-                .post("/greet")
+                .post("/greeting")
                 .then()
                 .statusCode(201)
-                .body("workflowdata.greeting", containsString("Hello"));
+                .body("workflowdata.greeting", containsString("Greetings"));
     }
 
     @Test
@@ -29,9 +29,9 @@ public class GreetTest {
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .body("{\"workflowdata\" : {\"name\" : \"Yoda\", \"language\":\"Spanish\"}}")
+                .body("{\"workflowdata\" : {\"name\" : \"Yoda\", \"country\":\"Spain\"}}")
                 .when()
-                .post("/greet")
+                .post("/greeting")
                 .then()
                 .statusCode(201)
                 .body("workflowdata.greeting", containsString("Saludos"));
