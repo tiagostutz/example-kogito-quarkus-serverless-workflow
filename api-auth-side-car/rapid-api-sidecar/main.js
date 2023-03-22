@@ -3,6 +3,8 @@ const url = require("url");
 const axios = require("axios");
 require("dotenv").config();
 
+const fake = require("./fake.json");
+
 const port = process.env.PORT || 3000;
 const proxyBaseUrl = process.env.PROXY_BASE_URL;
 const rapidApiKey = process.env.RAPID_API_KEY;
@@ -13,9 +15,9 @@ function onRequest(req, res) {
   const query = parts.query;
   const path = parts.pathname;
 
-  console.log(`proxying to ${proxyBaseUrl}/${path}`);
-
   const upstreamUrl = `${proxyBaseUrl}/${path.substring(1)}`;
+  console.log(`proxying to ${upstreamUrl}`);
+
   const options = {
     method: "GET",
     url: upstreamUrl,
@@ -27,9 +29,15 @@ function onRequest(req, res) {
     responseType: "stream",
   };
 
+  if (process.env.NODE_ENV === "development") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify(fake));
+  }
+
   axios
     .request(options)
     .then((response) => {
+      res.writeHead(200, response.headers);
       response.data.pipe(res);
     })
     .catch((error) => {

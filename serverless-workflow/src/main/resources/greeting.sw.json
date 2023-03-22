@@ -101,7 +101,7 @@
         }
       ],
       "stateDataFilter": {
-        "output": "${ {greeting: .greeting, city: .city} }"
+        "output": "${ {greeting: .greeting, city: .city, state_code: .state_code} }"
       },
       "end": true
     }
