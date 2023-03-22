@@ -1,0 +1,123 @@
+---
+openapi: 3.0.3
+info:
+  title: cost-living-service API
+  version: "1.0"
+servers:
+- url: http://localhost:3001
+  description: Cost of living and prices API
+  
+paths:
+  /prices:
+    get:
+      tags:
+      - Price Living Goods Services
+      operationId: getPrices 
+      parameters:      
+      - name: city_name
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: country_name
+        in: query
+        required: true
+        schema:
+          type: string
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricesOfGoodsServices'
+components: 
+
+  schemas:
+    PricesOfGoodsServices:
+      type: object
+      properties:
+        city_id:
+          type: integer
+        city_name:
+          type: string
+        state_code:
+          type: string
+        country_name:
+          type: string
+        exchange_rate:
+          type: object
+          properties:
+            EUR:
+              type: number
+            AUD:
+              type: number
+            USD:
+              type: number
+            CAD:
+              type: number
+            CNY:
+              type: number
+            CZK:
+              type: number
+            DKK:
+              type: number
+            GBP:
+              type: number
+            HKD:
+              type: number
+            JPY:
+              type: number
+            NZD:
+              type: number
+            NOK:
+              type: number
+            RUB:
+              type: number
+            KRW:
+              type: number
+            CHF:
+              type: number
+            UAH:
+              type: number
+            SEK:
+              type: number
+              
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceOfGoodService'
+        error:
+          type: string
+
+    PriceOfGoodService:
+      type: object
+      properties:
+        good_id:
+          type: integer
+        item_name:
+          type: string
+        category_id:
+          type: integer
+        category_name:
+          type: string
+        min:
+          type: number
+        avg:
+          type: number
+        max:
+          type: number
+        usd:
+          type: object
+          properties:
+            min:
+              type: string
+            avg:
+              type: string
+            max:
+              type: string
+        measure:
+          type: string
+        currency_code:
+          type: string

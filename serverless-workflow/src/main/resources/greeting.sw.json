@@ -1,0 +1,109 @@
+{
+  "id": "greeting",
+  "version": "1.0",
+  "specVersion": "0.8",
+  "name": "Greeting workflow",
+  "description": "JSON based greeting workflow",
+  "start": "ChooseOnCountry",
+  "functions": [
+    {
+      "name": "getGreetingFunction",
+      "operation": "international_greeting.yml#getGreeting"
+    },
+    {
+      "name": "getPriceFunction",
+      "operation": "cost_living.yml#getPrices"
+    },
+    {
+      "name": "exchangeCurrencyFunction",
+      "operation": "currency_exchange.yml#exchangeCurrency"
+    }
+  ],
+  "states": [
+    {
+      "name": "ChooseOnCountry",
+      "type": "switch",
+      "dataConditions": [
+        {
+          "condition": "${ .country == \"United States\" }",
+          "transition": "GreetInEnglish"
+        },
+        {
+          "condition": "${ .country == \"Spain\" }",
+          "transition": "GreetInSpanish"
+        },
+        {
+          "condition": "${ .country == \"Brazil\" }",
+          "transition": "GreetInPortuguese"
+        }
+      ],
+      "defaultCondition": {
+        "transition": "GreetInEnglish"
+      }
+    },
+    {
+      "name": "GreetInEnglish",
+      "type": "inject",
+      "data": {
+        "language": "English",
+        "city": "New York"
+      },
+      "transition": "GetPricesForFood"
+    },
+    {
+      "name": "GreetInSpanish",
+      "type": "inject",
+      "data": {
+        "language": "Spanish",
+        "city": "Barcelona"
+      },
+      "transition": "GetGreeting"
+    },
+    {
+      "name": "GreetInPortuguese",
+      "type": "inject",
+      "data": {
+        "language": "Portuguese",
+        "city": "São Paulo"
+      },
+      "transition": "GetGreeting"
+    },
+    {
+      "name": "GetPricesForFood",
+      "type": "operation",
+      "actions": [
+        {
+          "name": "getPrices",
+          "functionRef": {
+            "refName": "getPriceFunction",
+            "arguments": {
+              "city_name": "${ .city }",
+              "country_name": "${ .country }"
+            }
+          }
+        }
+      ],
+      "transition": "GetGreeting"
+    },
+    {
+      "name": "GetGreeting",
+      "type": "operation",
+      "actions": [
+        {
+          "name": "getGreeting",
+          "functionRef": {
+            "refName": "getGreetingFunction",
+            "arguments": {
+              "name": "${ .name }",
+              "language": "${ .language }"
+            }
+          }
+        }
+      ],
+      "stateDataFilter": {
+        "output": "${ {greeting: .greeting, city: .city} }"
+      },
+      "end": true
+    }
+  ]
+}
