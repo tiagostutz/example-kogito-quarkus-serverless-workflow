@@ -82,8 +82,28 @@
             }
           },
           "actionDataFilter": {
-            "results": "${ [.prices[] | select(.category_id == 6 or .category_id == 4) ] }",
-            "toStateData": "${ .food_prices }"
+            "results": "${ {food_prices:[.prices[] | select(.category_id == 6 or .category_id == 4) ], state_code: .state_code} }"
+          }
+        }
+      ],
+      "transition": "AverageFoodPriceInLocalCurrency"
+    },
+    {
+      "name": "AverageFoodPriceInLocalCurrency",
+      "type": "foreach",
+      "inputCollection": "${ .food_prices[] | select(.good_id == 25) }",
+      "iterationParam": "fp",
+      "outputCollection": "${ .food_prices_currency }",
+      "actions": [
+        {
+          "name": "exchangeCurrency",
+          "functionRef": {
+            "refName": "exchangeCurrencyFunction",
+            "arguments": {
+              "from": "${ .fp.currency_code }",
+              "to": "${ .reference_currency }",
+              "q": "${ .fp.avg }"
+            }
           }
         }
       ],

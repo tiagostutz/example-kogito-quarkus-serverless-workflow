@@ -16,7 +16,9 @@ function onRequest(req, res) {
   const path = parts.pathname;
 
   const upstreamUrl = `${proxyBaseUrl}/${path.substring(1)}`;
-  console.log(`proxying to ${upstreamUrl}`);
+  console.log(
+    `proxying to ${upstreamUrl} with params ${JSON.stringify(query)}`
+  );
 
   const options = {
     method: "GET",

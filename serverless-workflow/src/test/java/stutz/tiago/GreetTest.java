@@ -7,6 +7,7 @@ import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 public class GreetTest {
@@ -16,13 +17,14 @@ public class GreetTest {
         given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .body("{\"workflowdata\" : {\"name\" : \"Yoda\", \"country\":\"United States\"}}")
+                .body("{\"workflowdata\" : {\"name\" : \"Yoda\", \"country\":\"United States\", \"reference_currency\":\"GBP\"}}")
                 .when()
                 .post("/greeting")
                 .then()
                 .statusCode(201)
                 .body("workflowdata.greeting", containsString("Greetings"), "workflowdata.city",
-                        containsString("New York"));
+                        containsString("New York"), "workflowdata.state_code", containsString("NY"),
+                        "workflowdata.food_prices.size()", is(27));
     }
 
     @Test
