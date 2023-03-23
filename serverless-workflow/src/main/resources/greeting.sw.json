@@ -121,12 +121,12 @@
               "name": "${ .name }",
               "language": "${ .language }"
             }
+          },
+          "actionDataFilter": {
+            "results": "${ {greeting: .greeting} }"
           }
         }
       ],
-      "stateDataFilter": {
-        "output": "${ {greeting: .greeting, city: .city, state_code: .state_code, food_prices: .food_prices} }"
-      },
       "end": true
     }
   ]
