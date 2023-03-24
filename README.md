@@ -10,15 +10,21 @@ You will need:
 To run, first bring up the API side cars:
 
 ```shell
-$ cd api-auth-side-car
-$ docker-compose up --build
+cd api-auth-side-car
+```
+
+```shell
+docker-compose up --build
 ```
 
 Then bring up the sample service `international-greeting-service`:
 
 ```shell
-$ cd international-greeting-service
-$ mvn clean && quarkus dev
+cd international-greeting-service
+```
+
+```shell
+mvn clean && quarkus dev
 ```
 
 This API will be available at http://localhost:8081
@@ -26,8 +32,11 @@ This API will be available at http://localhost:8081
 Then bring the **Serverless Workflow** service:
 
 ```shell
-$ cd serverless-workflow
-$ mvn clean && quarkus dev
+cd serverless-workflow
+```
+
+```shell
+mvn clean && quarkus dev
 ```
 
 Finally, this serverless workflow based API will be available at http://localhost:8080
@@ -35,5 +44,5 @@ Finally, this serverless workflow based API will be available at http://localhos
 ## Example
 
 ```shell
-$ curl -X POST -H "Content-Type: application/json" -d '{"workflowdata" : {"name" : "Yoda", "country":"United States", "reference_currency":"GBP"}}' http://localhost:8080/greeting
+curl -X POST -H "Content-Type: application/json" -d '{"workflowdata" : {"name" : "Yoda", "country":"United States", "reference_currency":"GBP"}}' http://localhost:8080/greeting
 ```
