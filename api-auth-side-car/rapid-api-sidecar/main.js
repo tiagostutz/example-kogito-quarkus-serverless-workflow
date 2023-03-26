@@ -27,7 +27,7 @@ function onRequest(req, res) {
       "X-RapidAPI-Key": rapidApiKey,
       "X-RapidAPI-Host": rapidApiHost,
     },
-    responseType: "json",
+    responseType: "stream",
   };
 
   if (process.env.NODE_ENV === "development" && mockFilePath) {
@@ -40,13 +40,7 @@ function onRequest(req, res) {
     .request(options)
     .then((response) => {
       res.writeHead(200, response.headers);
-      console.log(response.data);
-      // response.data.pipe(res);
-      if (typeof response.data === "object") {
-        res.end(JSON.stringify(response.data));
-      } else {
-        res.end(JSON.stringify({ data: new String(response.data) }));
-      }
+      response.data.pipe(res);
     })
     .catch((error) => {
       console.error(error);

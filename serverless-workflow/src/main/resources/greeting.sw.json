@@ -15,13 +15,12 @@
       "operation": "cost_living.yml#getPrices"
     },
     {
-      "name": "exchangeCurrencyFunction",
-      "operation": "currency_exchange.yml#exchangeCurrency"
+      "name": "convertCurrencyFunction",
+      "operation": "currency_converter.yml#convertCurrency"
     },
     {
-      "name": "printMessage",
-      "type": "custom",
-      "operation": "sysout"
+      "name": "exchangeCurrencyFunction",
+      "operation": "currency_exchange.yml#exchangeCurrency"
     },
     {
       "name": "multiplyFunction",
@@ -106,16 +105,17 @@
       "outputCollection": "${ .food_prices }",
       "actions": [
         {
-          "name": "exchangeCurrency",
+          "name": "convertCurrency",
           "functionRef": {
-            "refName": "exchangeCurrencyFunction",
+            "refName": "convertCurrencyFunction",
             "arguments": {
-              "from": "${ .fp.currency_code }",
-              "to": "${ .reference_currency }"
+              "have": "${ .fp.currency_code }",
+              "want": "${ .reference_currency }",
+              "amount": "${ .fp.avg }"
             }
           },
           "actionDataFilter": {
-            "results": "${ {good_id: .fp.good_id, item_name: .fp.item_name, category_id: .fp.category_id, category_name: .fp.category_name, exchange_rate: .data, price: .fp.avg, priceInBaseCurrency: .fp.avg} }"
+            "results": "${ {good_id: .fp.good_id, item_name: .fp.item_name, category_id: .fp.category_id, category_name: .fp.category_name, exchange_rate: .data, price: .fp.avg, priceInBaseCurrency: .new_amount} }"
           }
         }
       ],

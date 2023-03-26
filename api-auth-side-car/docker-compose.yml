@@ -21,3 +21,13 @@ services:
       - 3002:3002
     env_file:
       - currency-exchange.env
+
+  currency-convert:
+    image: local/rapid-api-sidecar
+    build: rapid-api-sidecar
+    container_name: currency-converter-api-side-car
+    restart: always
+    ports:
+      - 3003:3003
+    env_file:
+      - currency-convert.env
