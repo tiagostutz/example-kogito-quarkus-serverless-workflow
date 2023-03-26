@@ -24,7 +24,7 @@ paths:
           type: string
       - name: q
         in: query
-        required: true
+        required: false
         schema:
           type: number
 
@@ -32,6 +32,6 @@ paths:
         "200":
           description: OK
           content:
-            text/plain:              
+            application/json:              
               schema:
                 type: number

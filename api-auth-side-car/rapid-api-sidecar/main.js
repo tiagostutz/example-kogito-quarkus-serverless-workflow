@@ -3,12 +3,11 @@ const url = require("url");
 const axios = require("axios");
 require("dotenv").config();
 
-const mockCostOfLiving = require("./mock_cost_of_living.json");
-
 const port = process.env.PORT || 3000;
 const proxyBaseUrl = process.env.PROXY_BASE_URL;
 const rapidApiKey = process.env.RAPID_API_KEY;
 const rapidApiHost = process.env.RAPID_API_HOST;
+const mockFilePath = process.env.MOCK_FILE_PATH;
 
 function onRequest(req, res) {
   const parts = url.parse(req.url, true);
@@ -28,11 +27,12 @@ function onRequest(req, res) {
       "X-RapidAPI-Key": rapidApiKey,
       "X-RapidAPI-Host": rapidApiHost,
     },
-    responseType: "stream",
+    responseType: "json",
   };
 
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === "development" && mockFilePath) {
     res.writeHead(200, { "Content-Type": "application/json" });
+    const mockCostOfLiving = require(`./${mockFilePath}`);
     return res.end(JSON.stringify(mockCostOfLiving));
   }
 
@@ -40,9 +40,16 @@ function onRequest(req, res) {
     .request(options)
     .then((response) => {
       res.writeHead(200, response.headers);
-      response.data.pipe(res);
+      console.log(response.data);
+      // response.data.pipe(res);
+      if (typeof response.data === "object") {
+        res.end(JSON.stringify(response.data));
+      } else {
+        res.end(JSON.stringify({ data: new String(response.data) }));
+      }
     })
     .catch((error) => {
+      console.error(error);
       error.response.data.pipe(res);
     });
 }

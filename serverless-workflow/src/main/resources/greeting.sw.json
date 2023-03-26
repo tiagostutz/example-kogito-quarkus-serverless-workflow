@@ -17,6 +17,16 @@
     {
       "name": "exchangeCurrencyFunction",
       "operation": "currency_exchange.yml#exchangeCurrency"
+    },
+    {
+      "name": "printMessage",
+      "type": "custom",
+      "operation": "sysout"
+    },
+    {
+      "name": "multiplyFunction",
+      "type": "expression",
+      "operation": "tonumber(.a) * tonumber(.b)"
     }
   ],
   "states": [
@@ -93,7 +103,7 @@
       "type": "foreach",
       "inputCollection": "${ .food_prices[] | select(.good_id == 25) }",
       "iterationParam": "fp",
-      "outputCollection": "${ .food_prices_currency }",
+      "outputCollection": "${ .food_prices }",
       "actions": [
         {
           "name": "exchangeCurrency",
@@ -101,9 +111,11 @@
             "refName": "exchangeCurrencyFunction",
             "arguments": {
               "from": "${ .fp.currency_code }",
-              "to": "${ .reference_currency }",
-              "q": "${ .fp.avg }"
+              "to": "${ .reference_currency }"
             }
+          },
+          "actionDataFilter": {
+            "results": "${ {good_id: .fp.good_id, item_name: .fp.item_name, category_id: .fp.category_id, category_name: .fp.category_name, exchange_rate: .data, price: .fp.avg, priceInBaseCurrency: .fp.avg} }"
           }
         }
       ],

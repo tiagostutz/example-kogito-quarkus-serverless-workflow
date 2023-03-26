@@ -24,7 +24,7 @@ public class GreetTest {
                 .statusCode(201)
                 .body("workflowdata.greeting", containsString("Greetings"), "workflowdata.city",
                         containsString("New York"), "workflowdata.state_code", containsString("NY"),
-                        "workflowdata.food_prices.size()", is(27));
+                        "workflowdata.food_prices.size()", is(1));
     }
 
     @Test
