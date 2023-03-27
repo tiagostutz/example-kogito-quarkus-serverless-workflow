@@ -100,7 +100,7 @@
     {
       "name": "AverageFoodPriceInLocalCurrency",
       "type": "foreach",
-      "inputCollection": "${ .food_prices[] | select(.good_id == 25) }",
+      "inputCollection": "${ .food_prices[] | select(.category_id == 4) }",
       "iterationParam": "fp",
       "outputCollection": "${ .food_prices }",
       "actions": [
@@ -119,6 +119,9 @@
           }
         }
       ],
+      "stateDataFilter": {
+        "output": "${ {name: .name, language: .language, avg_food_price: [ .food_prices[].priceInReferenceCurrency ] | add / length, city: .city, state_code: .state_code, reference_currency: .reference_currency} }"
+      },
       "transition": "GetGreeting"
     },
     {
