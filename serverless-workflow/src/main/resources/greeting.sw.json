@@ -75,7 +75,7 @@
         "language": "Portuguese",
         "city": "São Paulo"
       },
-      "transition": "GetGreeting"
+      "transition": "GetPricesForFood"
     },
     {
       "name": "GetPricesForFood",
