@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: currency-converter-service API
+  version: "1.0"
+servers:
+- url: http://localhost:3003
+  description: Currency Converter API
+paths:
+  /v1/convertcurrency:
+    get:
+      tags:
+      - Convert Currency
+      operationId: convertCurrency
+      parameters:
+      - name: have
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: want
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: amount
+        in: query
+        required: true
+        schema:
+          type: number
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyConverted'
+components:
+  schemas:
+    CurrencyConverted:
+      type: object
+      properties:
+        old_amount:
+          type: number
+        old_currency:
+          type: string
+        new_currency:
+          type: string
+        new_amount:
+          type: number
