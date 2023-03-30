@@ -34,4 +34,4 @@ paths:
           content:
             application/json:              
               schema:
-                type: number
+                type: object

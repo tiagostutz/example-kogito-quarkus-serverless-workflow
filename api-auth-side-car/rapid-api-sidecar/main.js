@@ -39,8 +39,14 @@ function onRequest(req, res) {
   axios
     .request(options)
     .then((response) => {
+      if (response.headers["content-type"].includes("text/plain")) {
+        response.data.on("data", (data) => {
+          res.end(JSON.stringify({ data: data.toString() }));
+        });
+        return;
+      }
       res.writeHead(200, response.headers);
-      response.data.pipe(res);
+      return response.data.pipe(res);
     })
     .catch((error) => {
       console.error(error);

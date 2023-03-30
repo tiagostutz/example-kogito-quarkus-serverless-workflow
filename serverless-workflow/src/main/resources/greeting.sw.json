@@ -23,9 +23,9 @@
       "operation": "currency_exchange.yml#exchangeCurrency"
     },
     {
-      "name": "multiplyFunction",
+      "name": "mergeExchangeCurrencyFunction",
       "type": "expression",
-      "operation": "tonumber(.a) * tonumber(.b)"
+      "operation": ".item+{price: ((.temp.data | tonumber) * (.item.avg | tonumber))}"
     }
   ],
   "states": [
@@ -66,7 +66,7 @@
         "language": "Spanish",
         "city": "Barcelona"
       },
-      "transition": "GetGreeting"
+      "transition": "GetPricesForRestaurants"
     },
     {
       "name": "GreetInPortuguese",
@@ -95,10 +95,10 @@
           }
         }
       ],
-      "transition": "AverageFoodPriceInLocalCurrency"
+      "transition": "AverageFoodPriceInReferenceCurrencyConverter"
     },
     {
-      "name": "AverageFoodPriceInLocalCurrency",
+      "name": "AverageFoodPriceInReferenceCurrencyConverter",
       "type": "foreach",
       "inputCollection": "${ .food_prices[] | select(.category_id == 4) }",
       "iterationParam": "fp",
@@ -121,6 +121,58 @@
       ],
       "stateDataFilter": {
         "output": "${ {name: .name, language: .language, avg_food_price: [ .food_prices[].priceInReferenceCurrency ] | add / length, city: .city, state_code: .state_code, reference_currency: .reference_currency} }"
+      },
+      "transition": "GetGreeting"
+    },
+    {
+      "name": "GetPricesForRestaurants",
+      "type": "operation",
+      "actions": [
+        {
+          "name": "getPrices",
+          "functionRef": {
+            "refName": "getPriceFunction",
+            "arguments": {
+              "city_name": "${ .city }",
+              "country_name": "${ .country }"
+            }
+          },
+          "actionDataFilter": {
+            "results": "${ {food_prices:[.prices[] | select(.category_id == 6) ], state_code: .state_code} }"
+          }
+        }
+      ],
+      "transition": "AverageFoodPriceInReferenceExchange"
+    },
+    {
+      "name": "AverageFoodPriceInReferenceExchange",
+      "type": "foreach",
+      "inputCollection": "${ .food_prices[]}",
+      "iterationParam": "item",
+      "outputCollection": "${ .food_prices }",
+      "actions": [
+        {
+          "name": "exchangeCurrency",
+          "functionRef": {
+            "refName": "exchangeCurrencyFunction",
+            "arguments": {
+              "from": "USD",
+              "to": "BRL"
+            }
+          },
+          "actionDataFilter": {
+            "toStateData": ".temp"
+          }
+        },
+        {
+          "name": "Merge",
+          "functionRef": {
+            "refName": "mergeExchangeCurrencyFunction"
+          }
+        }
+      ],
+      "stateDataFilter": {
+        "output": "${ {name: .name, language: .language, avg_food_price: [ .food_prices[].price ] | add / length, city: .city, state_code: .state_code, reference_currency: .reference_currency} }"
       },
       "transition": "GetGreeting"
     },
