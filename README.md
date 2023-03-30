@@ -79,7 +79,7 @@ mvn clean && quarkus dev
 
 Finally, this serverless workflow based API will be available at http://localhost:8080
 
-## Example
+## Examples
 
 ```shell
 curl -X POST -H "Content-Type: application/json" -d '{"workflowdata" : {"name" : "Yoda", "country":"United States", "reference_currency":"GBP"}}' http://localhost:8080/greeting
@@ -98,6 +98,27 @@ The output should be something like:
     "state_code": "NY",
     "reference_currency": "GBP",
     "greeting": "Greetings from Serverless Workflow, Yoda!"
+  }
+}
+```
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d '{"workflowdata" : {"name" : "Yoda", "country":"United States", "reference_currency":"GBP"}}' http://localhost:8080/greeting
+```
+
+The output should be something like:
+
+```json
+{
+  "id": "559d4b7a-56f3-4377-974c-386cc1e2551f",
+  "workflowdata": {
+    "name": "Yoda",
+    "language": "Spanish",
+    "avg_food_price": 112.03943076857142,
+    "city": "Barcelona",
+    "state_code": "NY",
+    "reference_currency": "BRL",
+    "greeting": "Saludos desde Serverless Workflow, Yoda!"
   }
 }
 ```
