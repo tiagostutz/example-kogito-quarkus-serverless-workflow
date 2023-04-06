@@ -156,8 +156,8 @@
           "functionRef": {
             "refName": "exchangeCurrencyFunction",
             "arguments": {
-              "from": "USD",
-              "to": "BRL"
+              "from": "${ .item.currency_code }",
+              "to": "${ .reference_currency }"
             }
           },
           "actionDataFilter": {
